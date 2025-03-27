@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - CampusAlert
+name: Build and deploy Python app to Azure Web App - CampusAlert20
 
 on:
   push:
@@ -68,14 +68,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DF3C1D1575024EF997873A0B27302D6F }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6F87B95B0162460AA77CCD93D18FB051 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_24F92048BC46444986E6B797CDDC2D32 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FF3349A642B545E786A69A5D77653A25 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3FD6B290D6CE4B5F88B4F3210B135EA7 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DE8B34E4D5A14E4795F0637E9DE0D3CD }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'CampusAlert'
+          app-name: 'CampusAlert20'
           slot-name: 'Production'
           
