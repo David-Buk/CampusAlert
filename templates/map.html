@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report an Incident</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBllPxxnyKCluVGeT_GE7Bep8Gz4dblQ9Q"></script>
+    <script>
+        let map, marker;
+
+        function initMap() {
+            const defaultLocation = { lat: -29.8579, lng: 31.0292 }; // Default to DUT main campus
+
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: defaultLocation,
+            });
+
+            // Add a draggable marker to the map
+            marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                draggable: true,
+                title: "Drag to set the location",
+            });
+
+            // Update hidden input fields when the marker is dragged
+            google.maps.event.addListener(marker, 'dragend', function(event) {
+                document.getElementById("latitude").value = event.latLng.lat();
+                document.getElementById("longitude").value = event.latLng.lng();
+            });
+
+            // Use geolocation to track the user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+
+                        // Center the map and move the marker to the user's location
+                        map.setCenter(userLocation);
+                        marker.setPosition(userLocation);
+
+                        // Update the hidden input fields
+                        document.getElementById("latitude").value = userLocation.lat;
+                        document.getElementById("longitude").value = userLocation.lng;
+                    },
+                    function() {
+                        alert("Failed to retrieve your location. Please drag the marker manually.");
+                    }
+                );
+            } else {
+                alert("Geolocation not supported by this browser.");
+            }
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <h1>Report an Incident</h1>
+    <form method="POST" action="/report">
+        <div>
+            <label for="incident_type">Incident Type:</label>
+            <input type="text" id="incident_type" name="incident_type" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="3" required></textarea>
+        </div>
+        <!-- Hidden input fields to store latitude and longitude -->
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <div id="map" style="width: 100%; height: 400px;"></div> <!-- Map container -->
+        <button type="submit">Submit Report</button>
+    </form>
+</body>
+</html>
